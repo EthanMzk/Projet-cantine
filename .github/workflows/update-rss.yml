@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupérer le dépôt
+      # 1️⃣ Récupérer le dépôt avec permissions push
       - name: Checkout du dépôt
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # 2️⃣ Installer Python
       - name: Configurer Python
@@ -38,7 +40,7 @@ jobs:
           git add cantine.xml
           git diff --cached --quiet || git commit -m "Mise à jour automatique cantine.xml"
 
-      # 6️⃣ Push sur GitHub directement avec GITHUB_TOKEN
+      # 6️⃣ Push sur GitHub
       - name: Push sur GitHub
         run: |
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/EthanMzk/Projet-cantine.git main
+          git push
