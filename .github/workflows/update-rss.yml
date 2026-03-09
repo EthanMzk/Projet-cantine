@@ -1,4 +1,4 @@
-name: Mise à jour cantine.xml
+name: cantine.xml
 
 on:
   workflow_dispatch: # Permet de lancer manuellement avec "Run workflow"
@@ -18,13 +18,9 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Installer dépendances (optionnel)
-        run: |
-          pip install -r requirements.txt
-
       - name: Exécuter le script pour générer cantine.xml
         run: |
-          python ton_script_mise_a_jour.py
+          python generate_rss.py
 
       - name: Commit des changements
         run: |
