@@ -1,20 +1,21 @@
 name: cantine.xml
 
+permissions:
+  contents: write
+
 on:
-  workflow_dispatch: # permet de lancer manuellement
+  workflow_dispatch:
   schedule:
-    - cron: '0 7 * * *' # optionnel : lance tous les jours à 7h
+    - cron: '0 7 * * *'
 
 jobs:
   update-cantine:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupérer le dépôt avec permissions push
+      # 1️⃣ Récupérer le dépôt
       - name: Checkout du dépôt
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       # 2️⃣ Installer Python
       - name: Configurer Python
@@ -25,14 +26,14 @@ jobs:
       # 3️⃣ Installer les dépendances
       - name: Installer les dépendances
         run: |
-          pip install requests
+          pip install requests beautifulsoup4
 
-      # 4️⃣ Exécuter le script pour générer cantine.xml
+      # 4️⃣ Exécuter le script
       - name: Exécuter generate_rss.py
         run: |
           python generate_rss.py
 
-      # 5️⃣ Commit des changements si cantine.xml a été modifié
+      # 5️⃣ Commit si modification
       - name: Commit des changements
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -40,7 +41,7 @@ jobs:
           git add cantine.xml
           git diff --cached --quiet || git commit -m "Mise à jour automatique cantine.xml"
 
-      # 6️⃣ Push sur GitHub
+      # 6️⃣ Push
       - name: Push sur GitHub
         run: |
           git push
