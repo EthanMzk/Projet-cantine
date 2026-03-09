@@ -1,27 +1,36 @@
 name: cantine.xml
 
 on:
-  workflow_dispatch: # Permet de lancer manuellement avec "Run workflow"
+  workflow_dispatch: # permet de lancer manuellement
   schedule:
-    - cron: '0 7 * * *' # Optionnel : lance tous les jours à 7h
+    - cron: '0 7 * * *' # optionnel : lance tous les jours à 7h
 
 jobs:
   update-cantine:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Récupérer le dépôt
       - name: Checkout du dépôt
         uses: actions/checkout@v3
 
-      - name: Configurer Python (si ton script est en Python)
+      # 2️⃣ Installer Python
+      - name: Configurer Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Exécuter le script pour générer cantine.xml
+      # 3️⃣ Installer les dépendances
+      - name: Installer les dépendances
+        run: |
+          pip install requests
+
+      # 4️⃣ Exécuter le script pour générer cantine.xml
+      - name: Exécuter generate_rss.py
         run: |
           python generate_rss.py
 
+      # 5️⃣ Commit des changements si cantine.xml a été modifié
       - name: Commit des changements
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -29,6 +38,7 @@ jobs:
           git add cantine.xml
           git diff --cached --quiet || git commit -m "Mise à jour automatique cantine.xml"
 
+      # 6️⃣ Push sur GitHub
       - name: Push sur GitHub
         uses: ad-m/github-push-action@v0.6.0
         with:
