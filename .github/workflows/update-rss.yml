@@ -38,9 +38,7 @@ jobs:
           git add cantine.xml
           git diff --cached --quiet || git commit -m "Mise à jour automatique cantine.xml"
 
-      # 6️⃣ Push sur GitHub
+      # 6️⃣ Push sur GitHub directement avec GITHUB_TOKEN
       - name: Push sur GitHub
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+        run: |
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/EthanMzk/Projet-cantine.git main
