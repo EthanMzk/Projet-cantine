@@ -1,20 +1,25 @@
 import requests
-import re
 
 url = "https://cantine-rapide-go.base44.app/rss"
 
-response = requests.get(url)
-html = response.text
+headers = {
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "application/rss+xml, application/xml"
+}
 
-# chercher le bloc RSS dans la page
-match = re.search(r"<rss.*</rss>", html, re.DOTALL)
+response = requests.get(url, headers=headers)
+content = response.text
 
-if match:
-    rss = match.group(0)
+# garder seulement le flux RSS
+start = content.find("<rss")
+end = content.find("</rss>")
+
+if start != -1 and end != -1:
+    rss = content[start:end+6]
 
     with open("cantine.xml", "w", encoding="utf-8") as f:
         f.write(rss)
 
-    print("RSS extrait et mis à jour")
+    print("RSS mis à jour depuis Base44")
 else:
-    print("Erreur : aucun flux RSS trouvé")
+    print("Flux RSS non trouvé")
