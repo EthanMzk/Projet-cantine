@@ -1,25 +1,30 @@
 import requests
 
-url = "https://cantine-rapide-go.base44.app/rss"
+url = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1"
 
-headers = {
-    "User-Agent": "Mozilla/5.0",
-    "Accept": "application/rss+xml, application/xml"
-}
+data = requests.get(url).json()
 
-response = requests.get(url, headers=headers)
-content = response.text
+xml = """<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>Ordre du Self</title>
+<description>Ordre de passage en temps réel</description>
+<link>https://cantine-rapide-go.base44.app</link>
+"""
 
-# garder seulement le flux RSS
-start = content.find("<rss")
-end = content.find("</rss>")
+for item in data:
+    xml += f"""
+<item>
+<title>{item['ordre']} - {item['classe']}</title>
+<description>{item['statut']}</description>
+<guid>{item['id']}</guid>
+</item>
+"""
 
-if start != -1 and end != -1:
-    rss = content[start:end+6]
+xml += """
+</channel>
+</rss>
+"""
 
-    with open("cantine.xml", "w", encoding="utf-8") as f:
-        f.write(rss)
-
-    print("RSS mis à jour depuis Base44")
-else:
-    print("Flux RSS non trouvé")
+with open("cantine.xml", "w", encoding="utf-8") as f:
+    f.write(xml)
