@@ -1,37 +1,40 @@
-name: Update RSS
+name: Mise à jour cantine.xml
 
 on:
+  workflow_dispatch: # Permet de lancer manuellement avec "Run workflow"
   schedule:
-    - cron: "*/1 * * * *"   # toutes les minutes
-  workflow_dispatch:          # permet de lancer manuellement
+    - cron: '0 7 * * *' # Optionnel : lance tous les jours à 7h
 
 jobs:
-  update:
+  update-cantine:
     runs-on: ubuntu-latest
 
     steps:
-      # Récupérer le contenu du repo
-      - uses: actions/checkout@v3
+      - name: Checkout du dépôt
+        uses: actions/checkout@v3
 
-      # Installer Python
-      - name: Setup Python
+      - name: Configurer Python (si ton script est en Python)
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: '3.x'
 
-      # Installer les dépendances Python
-      - name: Install dependencies
-        run: pip install requests beautifulsoup4
-
-      # Exécuter le script pour générer cantine.xml
-      - name: Generate RSS
-        run: python generate_rss.py
-
-      # Commit et push des changements
-      - name: Commit changes
+      - name: Installer dépendances (optionnel)
         run: |
-          git config --global user.name "rss-bot"
-          git config --global user.email "rss@example.com"
+          pip install -r requirements.txt
+
+      - name: Exécuter le script pour générer cantine.xml
+        run: |
+          python ton_script_mise_a_jour.py
+
+      - name: Commit des changements
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add cantine.xml
-          git commit -m "Update RSS" || exit 0
-          git push
+          git diff --cached --quiet || git commit -m "Mise à jour automatique cantine.xml"
+
+      - name: Push sur GitHub
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
