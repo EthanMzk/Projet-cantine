@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>Ordre du Self</title>
+<description>Ordre de passage en temps réel</description>
+<link>http://example.com</link>
+<item>
+<title>1 - 6ème A</title>
+<description>EN COURS</description>
+<guid>0-69a56499e5458127416f8849</guid>
+</item>
+<item>
+<title>2 - 6ème B</title>
+<description>EN ATTENTE</description>
+<guid>1-69a56499e5458127416f884a</guid>
+</item>
+<item>
+<title>3 - 5ème B</title>
+<description>EN ATTENTE</description>
+<guid>2-69a56499e5458127416f884c</guid>
+</item>
+<item>
+<title>4 - 5ème A</title>
+<description>EN ATTENTE</description>
+<guid>3-69a56499e5458127416f884b</guid>
+</item>
+</channel>
+</rss>
