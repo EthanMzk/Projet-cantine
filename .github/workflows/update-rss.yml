@@ -2,27 +2,32 @@ name: Update RSS
 
 on:
   schedule:
-    - cron: "*/1 * * * *"
-  workflow_dispatch:
+    - cron: "*/1 * * * *"   # toutes les minutes
+  workflow_dispatch:          # permet de lancer manuellement
 
 jobs:
   update:
     runs-on: ubuntu-latest
 
     steps:
+      # Récupérer le contenu du repo
       - uses: actions/checkout@v3
 
+      # Installer Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.x"
 
+      # Installer les dépendances Python
       - name: Install dependencies
-        run: pip install requests
+        run: pip install requests beautifulsoup4
 
+      # Exécuter le script pour générer cantine.xml
       - name: Generate RSS
         run: python generate_rss.py
 
+      # Commit et push des changements
       - name: Commit changes
         run: |
           git config --global user.name "rss-bot"
