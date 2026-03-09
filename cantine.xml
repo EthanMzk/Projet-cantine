@@ -1,28 +1,68 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-<channel>
-<title>Ordre du Self</title>
-<description>Ordre de passage en temps réel</description>
-<link>http://example.com</link>
-<item>
-<title>1 - 6ème A</title>
-<description>EN COURS</description>
-<guid>0-69a56499e5458127416f8849</guid>
-</item>
-<item>
-<title>2 - 6ème B</title>
-<description>EN ATTENTE</description>
-<guid>1-69a56499e5458127416f884a</guid>
-</item>
-<item>
-<title>3 - 5ème B</title>
-<description>EN ATTENTE</description>
-<guid>2-69a56499e5458127416f884c</guid>
-</item>
-<item>
-<title>4 - 5ème A</title>
-<description>EN ATTENTE</description>
-<guid>3-69a56499e5458127416f884b</guid>
-</item>
-</channel>
-</rss>
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <link href="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a563ac3aae8ad0e6d45ec7/f560b1809_logo.png" rel="icon" type="image/svg+xml"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="https://cantine-rapide-go.base44.app/manifest.json" rel="manifest"/>
+  <title>
+   rss | Cantine Rapide
+  </title>
+  <script crossorigin="" src="/assets/index-CQK-Ue09.js" type="module">
+  </script>
+  <link crossorigin="" href="/assets/index-BH403JN2.css" rel="stylesheet"/>
+  <script type="module">
+   let lastPath = "";
+function getPageNameFromPath(path) {
+  const segments = path.split("/").filter(Boolean);
+  return segments[0] || null;
+}
+function trackPageView() {
+  const path = window.location.pathname;
+  if (path === lastPath) return;
+  lastPath = path;
+  const pageName = getPageNameFromPath(path) || "home";
+  const appId = "69a563ac3aae8ad0e6d45ec7";
+  const serverUrl = "https://base44.app" || "";
+  if (!appId) return;
+  fetch(`${serverUrl}/app-logs/${appId}/log-user-in-app/${pageName}`, {
+    method: "POST",
+  }).catch(() => {});
+}
+const originalPushState = history.pushState.bind(history);
+history.pushState = function (...args) {
+  originalPushState(...args);
+  trackPageView();
+};
+const originalReplaceState = history.replaceState.bind(history);
+history.replaceState = function (...args) {
+  originalReplaceState(...args);
+  trackPageView();
+};
+window.addEventListener("popstate", trackPageView);
+trackPageView();
+  </script>
+  <meta content="rss | Cantine Rapide" property="og:title"/>
+  <meta content="Gérez facilement les flux de repas de votre cantine avec un affichage clair de l'ordre de passage pour les élèves et une console d'administration pour la gestion des classes." property="og:description"/>
+  <meta content="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/render/image/public/base44-prod/public/69a563ac3aae8ad0e6d45ec7/f560b1809_logo.png?width=1200&amp;height=630&amp;resize=contain" property="og:image"/>
+  <meta content="https://cantine-rapide-go.base44.app/rss" property="og:url"/>
+  <meta content="website" property="og:type"/>
+  <meta content="Cantine Rapide" property="og:site_name"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="rss | Cantine Rapide" name="twitter:title"/>
+  <meta content="Gérez facilement les flux de repas de votre cantine avec un affichage clair de l'ordre de passage pour les élèves et une console d'administration pour la gestion des classes." name="twitter:description"/>
+  <meta content="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/render/image/public/base44-prod/public/69a563ac3aae8ad0e6d45ec7/f560b1809_logo.png?width=1200&amp;height=630&amp;resize=contain" name="twitter:image"/>
+  <meta content="https://cantine-rapide-go.base44.app/rss" name="twitter:url"/>
+  <meta content="Gérez facilement les flux de repas de votre cantine avec un affichage clair de l'ordre de passage pour les élèves et une console d'administration pour la gestion des classes." name="description"/>
+  <meta content="yes" name="mobile-web-app-capable"/>
+  <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+  <meta content="Cantine Rapide" name="apple-mobile-web-app-title"/>
+  <link href="https://cantine-rapide-go.base44.app/rss" rel="canonical"/>
+  <script async="true" data-app-id="69a563ac3aae8ad0e6d45ec7" data-platform-url="https://app.base44.com" src="/static/js/badge.js">
+  </script>
+ </head>
+ <body>
+  <div id="root">
+  </div>
+ </body>
+</html>
