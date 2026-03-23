@@ -1,12 +1,8 @@
 import requests
 
-# API Base44
 url = "https://cantine-rapide-go.base44.app/api/apps/69a563ac3aae8ad0e6d45ec7/entities/Classe?sort=ordre"
-
-# Récupération des données
 data = requests.get(url).json()
 
-# Début du RSS
 xml = """<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
@@ -15,22 +11,24 @@ xml = """<?xml version="1.0" encoding="UTF-8"?>
 <link>https://cantine-rapide-go.base44.app</link>
 """
 
-# Boucle pour chaque élément
 for item in data:
+    ordre = item.get('ordre', '')
+    classe = item.get('classe') or item.get('Classe') or item.get('nom', '')
+    statut = item.get('statut', '')
+    id_item = item.get('id', '')
+
     xml += f"""
 <item>
-<title>{item['ordre']} - {item['classe']}</title>
-<description>{item.get('statut', '')}</description>
-<guid>{item['id']}</guid>
+<title>{ordre} - {classe}</title>
+<description>{statut}</description>
+<guid>{id_item}</guid>
 </item>
 """
 
-# Fin du RSS
 xml += """
 </channel>
 </rss>
 """
 
-# Écriture dans le fichier
 with open("cantine.xml", "w", encoding="utf-8") as f:
     f.write(xml)
