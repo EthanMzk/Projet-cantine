@@ -6,34 +6,29 @@ permissions:
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/1 * * * *"   # toutes les minutes
+    - cron: "*/5 * * * *"
 
 jobs:
   update-cantine:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupérer le dépôt
       - name: Checkout du dépôt
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # 2️⃣ Installer Python
       - name: Configurer Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      # 3️⃣ Installer les dépendances
       - name: Installer les dépendances
         run: |
           pip install requests beautifulsoup4
 
-      # 4️⃣ Exécuter le script qui génère cantine.xml
       - name: Générer le RSS
         run: |
           python generate_rss.py
 
-      # 5️⃣ Commit uniquement si le fichier a changé
       - name: Commit des changements
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -41,7 +36,6 @@ jobs:
           git add cantine.xml
           git diff --cached --quiet || git commit -m "Mise à jour automatique cantine.xml"
 
-      # 6️⃣ Push vers GitHub
       - name: Push sur GitHub
         run: |
           git push
