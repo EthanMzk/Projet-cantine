@@ -1,30 +1,24 @@
 import requests
+from bs4 import BeautifulSoup
 
-url = "https://qtrypzzcjebvfcihiynt.supabase.co/rest/v1/ordre"
+url = "https://cantine-rapide-go.base44.app/rss"
 
-headers = {
-    "apikey": "TA_SUPABASE_KEY",
-    "Authorization": "Bearer TA_SUPABASE_KEY"
-}
+html = requests.get(url).text
 
-data = requests.get(url, headers=headers).json()
+soup = BeautifulSoup(html, "html.parser")
+
+items = soup.find_all("item")
 
 xml = """<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
 <title>Ordre du Self</title>
-<description>Ordre de passage</description>
 <link>https://cantine-rapide-go.base44.app</link>
+<description>Ordre de passage</description>
 """
 
-for item in data:
-    xml += f"""
-<item>
-<title>{item['ordre']} - {item['classe']}</title>
-<description>{item['statut']}</description>
-<guid>{item['id']}</guid>
-</item>
-"""
+for item in items:
+    xml += str(item)
 
 xml += "</channel></rss>"
 
