@@ -1,15 +1,19 @@
 import requests
 
-url = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1"
+APP_ID = "69a563ac3aae8ad0e6d45ec7"
 
-data = requests.get(url).json()
+url = f"https://app.base44.com/api/apps/{APP_ID}/entities"
+
+headers = {
+    "Content-Type": "application/json"
+}
+
+data = requests.get(url, headers=headers).json()
 
 xml = """<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
 <title>Ordre du Self</title>
-<description>Ordre de passage en temps réel</description>
-<link>https://cantine-rapide-go.base44.app</link>
 """
 
 for item in data:
@@ -17,14 +21,10 @@ for item in data:
 <item>
 <title>{item['ordre']} - {item['classe']}</title>
 <description>{item['statut']}</description>
-<guid>{item['id']}</guid>
 </item>
 """
 
-xml += """
-</channel>
-</rss>
-"""
+xml += "</channel></rss>"
 
 with open("cantine.xml", "w", encoding="utf-8") as f:
     f.write(xml)
