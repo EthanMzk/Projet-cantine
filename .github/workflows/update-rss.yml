@@ -1,44 +1,29 @@
 name: Update cantine.xml
 
-permissions:
-  contents: write
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 on:
-  workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
+  workflow_dispatch:
 
 jobs:
-  update-cantine:
+  update:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout du dépôt
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Configurer Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Installer les dépendances
-        run: |
-          pip install requests beautifulsoup4
+      - run: pip install requests beautifulsoup4
 
-      - name: Générer le RSS
-        run: |
-          python generate_rss.py
+      - run: python generate_rss.py
 
-      - name: Commit des changements
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+      - run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "github-actions"
           git add cantine.xml
-          git diff --cached --quiet || git commit -m "Mise à jour automatique cantine.xml"
+          git diff --quiet || git commit -m "update rss"
 
-      - name: Push sur GitHub
-        run: |
-          git push
+      - run: git push
